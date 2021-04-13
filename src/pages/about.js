@@ -5,7 +5,7 @@ import { faReact } from "@fortawesome/free-brands-svg-icons"
 
 const AboutPage = () => (
   <Layout>
-    <h1>About the Author</h1>
+    <h3>About the Author</h3>
     <p>Welcome to my Gatsby site.</p>
     <FontAwesomeIcon icon={faReact} />
   </Layout>

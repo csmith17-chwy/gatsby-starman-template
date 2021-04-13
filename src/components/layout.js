@@ -1,4 +1,5 @@
 import React from "react"
+import { useStaticQuery, Link, graphql } from "gatsby"
 import { createGlobalStyle } from "styled-components"
 import "@fontsource/exo"
 import "@fontsource/oswald"
@@ -202,11 +203,27 @@ const GlobalStyle = createGlobalStyle`
 		display: none;
 	}
 `
+
 export default function Layout({ children }) {
+  const data = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            title
+          }
+        }
+      }
+    `
+  )
   return (
-    <React.Fragment>
+    <>
       <GlobalStyle theme="purple" />
+      <Link to={`/`}>
+        <h3>{data.site.siteMetadata.title}</h3>
+      </Link>
+      <Link to={`/about/`}>About</Link>
       {children}
-    </React.Fragment>
+    </>
   )
 }
