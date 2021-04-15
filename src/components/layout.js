@@ -1,9 +1,12 @@
-import React from "react"
+import React, { useState } from "react"
 import { useStaticQuery, Link, graphql } from "gatsby"
 import { createGlobalStyle } from "styled-components"
 import "@fontsource/exo"
 import "@fontsource/oswald"
 import "@fontsource/lato"
+import Toggle from "react-toggle"
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const themeVariables = {
   marsOrange: "#FD2E04",
@@ -386,9 +389,159 @@ const GlobalStyle = createGlobalStyle`
 		float: left;
 		min-width: 100%;
 	}
+
+	.theme-toggle {
+		position: absolute;
+    top: 2rem;
+    right: 2rem;
+	}
+
+	.react-toggle {
+		touch-action: pan-x;
+
+		display: inline-block;
+		position: relative;
+		cursor: pointer;
+		background-color: transparent;
+		border: 0;
+		padding: 0;
+
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+
+		-webkit-tap-highlight-color: rgba(0,0,0,0);
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.react-toggle-screenreader-only {
+		border: 0;
+		clip: rect(0 0 0 0);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
+	}
+
+	.react-toggle--disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+		-webkit-transition: opacity 0.25s;
+		transition: opacity 0.25s;
+	}
+
+	.react-toggle-track {
+		width: 50px;
+		height: 24px;
+		padding: 0;
+		border-radius: 30px;
+		background-color: #0360DF;
+		-webkit-transition: all 0.2s ease;
+		-moz-transition: all 0.2s ease;
+		transition: all 0.2s ease;
+	}
+
+	.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+		background-color: #0360DF;
+	}
+
+	.react-toggle--checked .react-toggle-track {
+		background-color: #95958B;
+	}
+
+	.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+		background-color: #95958B;
+	}
+
+	.react-toggle-track-check {
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		top: 0px;
+		bottom: 0px;
+		margin-top: auto;
+		margin-bottom: auto;
+		line-height: 0;
+		left: 5px;
+		opacity: 0;
+		-webkit-transition: opacity 0.25s ease;
+		-moz-transition: opacity 0.25s ease;
+		transition: opacity 0.25s ease;
+	}
+
+	.react-toggle--checked .react-toggle-track-check {
+		opacity: 1;
+		-webkit-transition: opacity 0.25s ease;
+		-moz-transition: opacity 0.25s ease;
+		transition: opacity 0.25s ease;
+	}
+
+	.react-toggle-track-x {
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		top: 0px;
+		bottom: 0px;
+		margin-top: auto;
+		margin-bottom: auto;
+		line-height: 0;
+		right: 5px;
+		opacity: 1;
+		-webkit-transition: opacity 0.25s ease;
+		-moz-transition: opacity 0.25s ease;
+		transition: opacity 0.25s ease;
+	}
+
+	.react-toggle--checked .react-toggle-track-x {
+		opacity: 0;
+	}
+
+	.react-toggle-thumb {
+		transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+		position: absolute;
+		top: 1px;
+		left: 1px;
+		width: 22px;
+		height: 22px;
+		border: 1px solid #4D4D4D;
+		border-radius: 50%;
+		background-color: #FAFAFA;
+
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+
+		-webkit-transition: all 0.25s ease;
+		-moz-transition: all 0.25s ease;
+		transition: all 0.25s ease;
+	}
+
+	.react-toggle--checked .react-toggle-thumb {
+		left: 27px;
+		border-color: #95958B;
+	}
+
+	.react-toggle--focus .react-toggle-thumb {
+		-webkit-box-shadow: 0px 0px 3px 2px #FD2E04;
+		-moz-box-shadow: 0px 0px 3px 2px #FD2E04;
+		box-shadow: 0px 0px 2px 3px #FD2E04;
+	}
+
+	.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+		-webkit-box-shadow: 0px 0px 5px 5px #FD2E04;
+		-moz-box-shadow: 0px 0px 5px 5px #FD2E04;
+		box-shadow: 0px 0px 5px 5px #FD2E04;
+	}
 `
 
 export default function Layout({ children }) {
+  const [isOn, toggleIsOn] = useState(false)
+  const toggle = () => toggleIsOn(!isOn)
   const data = useStaticQuery(
     graphql`
       query {
@@ -400,13 +553,24 @@ export default function Layout({ children }) {
       }
     `
   )
+
   return (
     <>
-      <GlobalStyle theme={themeDark} />
+      <GlobalStyle theme={isOn ? themeDark : themeLight} />
       <Link to={`/`}>
         <h1>{data.site.siteMetadata.title}</h1>
       </Link>
       <Link to={`/about/`}>About</Link>
+      <label className="theme-toggle">
+        <Toggle
+          defaultChecked={false}
+          icons={{
+            checked: <FontAwesomeIcon icon={faMoon} color="#FDF591" />,
+            unchecked: <FontAwesomeIcon icon={faSun} color="#FDF591" />,
+          }}
+          onChange={toggle}
+        />
+      </label>
       {children}
     </>
   )
