@@ -62,6 +62,7 @@ const GlobalStyle = createGlobalStyle`
 	body {
 		color: ${props => props.theme.font};
 		background-color: ${props => props.theme.background};
+		margin: 0.5rem 1rem;
 	}
 
 	main {
@@ -396,6 +397,69 @@ const GlobalStyle = createGlobalStyle`
     right: 2rem;
 	}
 
+	.site-title {
+    width:100%;
+		span {
+			vertical-align:middle;
+    	display: inline-block;
+		}
+		span:first-child {
+			height: 50px;
+		}
+	}
+
+	.navigation {
+		margin: 0 auto;
+		width: 75%;
+		span {
+			margin: 0 auto;
+			display: inline-block;
+		}
+		/* one item */
+		span:first-child:nth-last-child(1) {
+		/* -or- span:only-child { */
+				width: 100%;
+		}
+
+		/* two items */
+		span:first-child:nth-last-child(2),
+		span:first-child:nth-last-child(2) ~ span {
+				width: 50%;
+		}
+
+		/* three items */
+		span:first-child:nth-last-child(3),
+		span:first-child:nth-last-child(3) ~ span {
+				width: 33.3333%;
+		}
+
+		/* four items */
+		span:first-child:nth-last-child(4),
+		span:first-child:nth-last-child(4) ~ span {
+				width: 25%;
+		}
+		/* five items */
+		span:first-child:nth-last-child(5),
+		span:first-child:nth-last-child(5) ~ span {
+				width: 20%;
+		}
+		/* six items */
+		span:first-child:nth-last-child(6),
+		span:first-child:nth-last-child(6) ~ span {
+				width: 16.66%;
+		}
+		/* seven items */
+		span:first-child:nth-last-child(7),
+		span:first-child:nth-last-child(7) ~ span {
+				width: 14.285%;
+		}
+		/* eight items */
+		span:first-child:nth-last-child(8),
+		span:first-child:nth-last-child(8) ~ span {
+				width: 12.5%;
+		}
+	}
+
 	.react-toggle {
 		touch-action: pan-x;
 
@@ -558,9 +622,54 @@ export default function Layout({ children }) {
     <>
       <GlobalStyle theme={isOn ? themeDark : themeLight} />
       <Link to={`/`}>
-        <h1>{data.site.siteMetadata.title}</h1>
+        <h1 className="site-title">
+          <span>
+            <svg
+              className="site-icon"
+              viewBox="0 0 160 160"
+              width="50"
+              height="50"
+              fill="#0360DF"
+            >
+              <circle cx="80" cy="80" r="50" />
+              <g transform=" matrix(0.866, -0.5, 0.25, 0.433, 80, 80)">
+                <path
+                  d="M 0,70 A 65,70 0 0,0 65,0 5,5 0 0,1 75,0 75,70 0 0,1 0,70Z"
+                  fill="#FD2E04"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="360 0 0"
+                    to="0 0 0"
+                    dur="1s"
+                    repeatCount="indefinite"
+                  />
+                </path>
+              </g>
+              <path
+                d="M 50,0 A 50,50 0 0,0 -50,0Z"
+                transform="matrix(0.866, -0.5, 0.5, 0.866, 80, 80)"
+              />
+            </svg>
+          </span>
+          <span>{data.site.siteMetadata.title}</span>
+        </h1>
       </Link>
-      <Link to={`/about/`}>About</Link>
+      <div className="navigation">
+        <span>
+          <Link to={`/about/`}>#about</Link>
+        </span>
+        <span>
+          <Link to={`/about/`}>#about</Link>
+        </span>
+        <span>
+          <Link to={`/about/`}>#about</Link>
+        </span>
+        <span>
+          <Link to={`/about/`}>#about</Link>
+        </span>
+      </div>
       <label className="theme-toggle">
         <Toggle
           defaultChecked={false}

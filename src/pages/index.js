@@ -1,11 +1,17 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/layout"
+import styled from "styled-components"
+
+const HomeContainer = styled.div`
+  margin: 0 auto;
+  width: 66%;
+`
 
 export default function Home({ data }) {
   return (
     <Layout>
-      <div>
+      <HomeContainer>
         <h4>{data.allMarkdownRemark.totalCount} Posts</h4>
         {data.allMarkdownRemark.edges.map(({ node }) => (
           <div key={node.id}>
@@ -17,7 +23,7 @@ export default function Home({ data }) {
             </Link>
           </div>
         ))}
-      </div>
+      </HomeContainer>
     </Layout>
   )
 }
